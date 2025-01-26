@@ -11,7 +11,16 @@ import (
 	"sort"
 	"strings"
 	"time"
+
+	"github.com/go-git/go-git/v5"
+	"github.com/go-git/go-git/v5/plumbing/object"
 )
+
+const outOfRange = 99999
+const daysInLastSixMonths = 183
+const weeksInLastSixMonths = 26
+
+type column []int
 
 func scan(folder string) {
 	fmt.Printf("Found folders:\n\n")
@@ -57,7 +66,7 @@ func scanGitFolders(folders []string, folder string) []string {
 
 func stats(email string) {
 	commits := processRepositories(email)
-	printCommits(commits)
+	printCommitsStats(commits)
 }
 
 func processRepositories(email string) map[int]int {
@@ -174,7 +183,7 @@ func sortMapIntoSlice(m map[int]int) []int {
 }
 
 func buildCols(keys []int, commits map[int]int) map[int]column {
-	cols := male(map[int]column)
+	cols := make(map[int]column)
 	col := column{}
 
 	for _, k := range keys {
@@ -251,7 +260,7 @@ func printDayCol(day int) {
 		out = " Fri "
 	}
 
-	fmt.Printf(out)
+	fmt.Print(out)
 }
 
 func printCell(val int, today bool) {
@@ -270,7 +279,7 @@ func printCell(val int, today bool) {
 	}
 
 	if val == 0 {
-		fmt.Printf(escape + "  -  " + "\033[0m")
+		fmt.Print(escape + "  -  " + "\033[0m")
 		return
 	}
 
