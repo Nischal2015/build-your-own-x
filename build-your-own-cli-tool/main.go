@@ -328,7 +328,6 @@ func addNewSliceElementsToFile(filePath string, newRepos []string) {
 	existingRepos := parseFileLinesToSlice(filePath)
 	repos := joinSlices(newRepos, existingRepos)
 	dumpStringsSliceToFile(repos, filePath)
-
 }
 
 func parseFileLinesToSlice(filePath string) []string {
